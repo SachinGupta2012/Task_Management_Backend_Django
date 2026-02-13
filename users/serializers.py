@@ -21,13 +21,7 @@ class RequestOTPSerializer(serializers.Serializer):
             expires_at=timezone.now() + timedelta(minutes=5)
         )
 
-        send_mail(
-        subject="Your Task Manager OTP",
-        message=f"Your OTP is {code}. It expires in 5 minutes.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[email],
-        fail_silently=False,
-    )  # Replace with real email later
+        print(f"OTP for {email}: {code}")
 
         return user
 
