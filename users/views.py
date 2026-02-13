@@ -7,6 +7,8 @@ from django.utils import timezone
 from .models import User, OTP
 from .serializers import RequestOTPSerializer, VerifyOTPSerializer
 
+
+
 from drf_spectacular.utils import extend_schema
 from activity.utils import log_activity
 from .throttles import OTPThrottle

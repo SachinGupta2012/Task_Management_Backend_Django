@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.utils import timezone
 from datetime import timedelta
 from .models import User, OTP
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class RequestOTPSerializer(serializers.Serializer):
@@ -19,7 +21,13 @@ class RequestOTPSerializer(serializers.Serializer):
             expires_at=timezone.now() + timedelta(minutes=5)
         )
 
-        print(f"OTP for {email}: {code}")  # Replace with real email later
+        send_mail(
+        subject="Your Task Manager OTP",
+        message=f"Your OTP is {code}. It expires in 5 minutes.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[email],
+        fail_silently=False,
+    )  # Replace with real email later
 
         return user
 
