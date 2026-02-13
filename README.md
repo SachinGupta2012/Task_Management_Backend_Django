@@ -1,19 +1,19 @@
 Task Management Backend API
 ===========================
 
-A secure and scalable backend for a Task Management System built with Django REST Framework.
+A secure backend for a Task Management System built using Django REST Framework.
 
-This project was developed as part of a backend assignment to demonstrate API design, authentication, security practices, rate limiting, logging, and production deployment.
+This project demonstrates secure authentication, clean REST API design, rate limiting, logging, and production deployment.
 
 🚀 Live Deployment
-------------------
+==================
 
-**Hosted Backend URL:**[https://task-management-backend-django.onrender.com](https://task-management-backend-django.onrender.com)
+**Hosted Backend:**[https://task-management-backend-django.onrender.com](https://task-management-backend-django.onrender.com)
 
 **Swagger API Documentation:**[https://task-management-backend-django.onrender.com/api/v1/docs/](https://task-management-backend-django.onrender.com/api/v1/docs/)
 
 🧠 Tech Stack
--------------
+=============
 
 *   Django 5.x
     
@@ -21,36 +21,75 @@ This project was developed as part of a backend assignment to demonstrate API de
     
 *   JWT Authentication (SimpleJWT)
     
-*   Email-based OTP authentication
+*   OTP-based Authentication
     
 *   PostgreSQL (Production)
     
-*   SQLite (Local development)
+*   SQLite (Local Development)
     
-*   drf-spectacular (Swagger docs)
+*   drf-spectacular (Swagger Docs)
     
-*   Gunicorn (WSGI server)
+*   Gunicorn
     
-*   Render (Deployment)
-    
-
-1\. Authentication & Security
-=============================
-
-### Email-Based OTP Flow
-
-1.  User submits email.
-    
-2.  OTP is generated and stored with expiration.
-    
-3.  OTP is sent via SMTP email.
-    
-4.  User verifies OTP.
-    
-5.  JWT access and refresh tokens are issued.
+*   Render Deployment
     
 
-### JWT Configuration
+🔐 Authentication Flow
+======================
+
+This system uses **Email-based OTP + JWT authentication**.
+
+> ⚠ For evaluation purposes, OTP is logged in server console instead of being sent via email.
+
+Step 1 — Request OTP
+--------------------
+
+### Endpoint
+
+`   POST /api/v1/auth/request-otp/   `
+
+### Request Body
+
+`   {    "email": "user@example.com"  }   `
+
+### What Happens
+
+*   User is created if not exists
+    
+*   6-digit OTP is generated
+    
+*   OTP stored with 5-minute expiration
+    
+*   OTP logged in server console
+    
+*   Rate limiting applied
+    
+
+### Response
+
+`   {    "message": "OTP sent successfully"  }   `
+
+Step 2 — Verify OTP
+-------------------
+
+### Endpoint
+
+`   POST /api/v1/auth/verify-otp/   `
+
+### Request Body
+
+`   {    "email": "user@example.com",    "code": "123456"  }   `
+
+### Response
+
+`   {    "access": "jwt_access_token",    "refresh": "jwt_refresh_token"  }   `
+
+If OTP is invalid or expired:
+
+`   400 Bad Request   `
+
+🔑 JWT Configuration
+====================
 
 *   Access Token Lifetime: 10 minutes
     
@@ -59,60 +98,81 @@ This project was developed as part of a backend assignment to demonstrate API de
 *   Token blacklisting enabled
     
 
-### Authorization
+Protected endpoints require:
 
-*   Strict ownership enforcement.
-    
-*   Users can only access, modify, or delete their own tasks.
-    
-*   Querysets filtered by request.user.
-    
+`Authorization: Bearer` 
 
-2\. Core Functionalities
-========================
+📝 Task Management Endpoints
+============================
 
-Authenticated users can:
+Base URL:
 
-*   Create Task
-    
-*   View Tasks
-    
-*   Update Task
-    
-*   Delete Task
-    
+`   /api/v1/tasks/   `
 
-Additional features:
+All endpoints require authentication.
+
+Create Task
+-----------
+
+`   POST /api/v1/tasks/   `
+
+### Body
+
+`   {    "title": "Complete assignment",    "description": "Finish backend project",    "status": "pending"  }   `
+
+Get All Tasks
+-------------
+
+`   GET /api/v1/tasks/   `
+
+Returns only tasks belonging to authenticated user.
+
+Supports:
 
 *   Pagination
     
-*   Filtering
+*   Filtering by status
     
 *   Search
     
 *   Ordering
     
 
-3\. Middleware & Cross-Cutting Concerns
-=======================================
+Get Single Task
+---------------
 
-Implemented using Django & DRF:
+`   GET /api/v1/tasks/{id}/   `
 
-*   JWT Authentication
+Returns task owned by user.
+
+Update Task
+-----------
+
+`   PUT /api/v1/tasks/{id}/   `
+
+or
+
+`   PATCH /api/v1/tasks/{id}/   `
+
+Delete Task
+-----------
+
+`   DELETE /api/v1/tasks/{id}/   `
+
+🔒 Authorization
+================
+
+*   Users can only access their own tasks.
     
-*   Permission Classes (IsAuthenticated)
+*   Querysets filtered using request.user.
     
-*   Input validation via serializers
-    
-*   Rate limiting
-    
-*   Global exception handling
-    
-*   Activity logging
+*   Unauthorized access returns HTTP 403.
     
 
-4\. Rate Limiting
-=================
+⏱ Rate Limiting
+===============
+
+To prevent abuse:
 
 *   OTP endpoint: 5 requests per minute
     
@@ -121,12 +181,12 @@ Implemented using Django & DRF:
 *   Anonymous users: 10 requests per minute
     
 
-Returns HTTP 429 on abuse.
+Exceeding limits returns HTTP 429.
 
-5\. Activity Logging
-====================
+📊 Activity Logging
+===================
 
-All major actions are logged in database:
+The system logs:
 
 *   OTP requests
     
@@ -134,117 +194,85 @@ All major actions are logged in database:
     
 *   Task creation
     
-*   Task update
+*   Task updates
     
 *   Task deletion
     
-*   Security events
+*   Security-related actions
     
 
-Logs stored for audit and monitoring purposes.
+Logs are stored in the database for auditing.
 
-6\. Local Setup Instructions
-============================
+⚙ Environment Variables
+=======================
 
-Step 1 – Clone Repository
--------------------------
+Refer to .env.example.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone   cd Task_Management_Backend_Django   `
+Required variables include:
 
-Step 2 – Create Virtual Environment
------------------------------------
+*   SECRET\_KEY
+    
+*   DEBUG
+    
+*   ALLOWED\_HOSTS
+    
+*   DATABASE\_URL (Production)
+    
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python -m venv .venv  .venv\Scripts\activate   # Windows  source .venv/bin/activate  # Mac/Linux   `
+Email SMTP variables are optional in this submission since OTP is logged to console.
 
-Step 3 – Install Dependencies
------------------------------
+🛠 Local Setup Instructions
+===========================
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   pip install -r requirements.txt   `
+Clone Repository
+----------------
 
-Step 4 – Configure Environment
-------------------------------
+`   git clone   cd Task_Management_Backend_Django   `
 
-Copy example file:
+Create Virtual Environment
+--------------------------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   cp .env.example .env   `
+`   python -m venv .venv  .venv\Scripts\activate   `
 
-Update values inside .env.
+Install Dependencies
+--------------------
 
-Step 5 – Apply Migrations
--------------------------
+`   pip install -r requirements.txt   `
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python manage.py migrate   `
+Configure Environment
+---------------------
+`   cp .env.example .env   `
 
-Step 6 – Run Server
--------------------
+Update necessary values.
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python manage.py runserver   `
+Apply Migrations
+----------------
+`   python manage.py migrate   `
+
+Run Server
+----------
+
+`   python manage.py runserver   `
 
 Open:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   http://127.0.0.1:8000/api/v1/docs/   `
+`   http://127.0.0.1:8000/api/v1/docs/   `
 
-7\. Deployment
-==============
+🌍 Deployment
+=============
 
 Deployed on Render using:
 
-*   Gunicorn
+*   Gunicorn WSGI server
     
-*   PostgreSQL (Render managed database)
+*   PostgreSQL managed database
     
 *   Environment-based configuration
     
 *   DEBUG=False in production
     
 
-Production command:
+Start command:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python manage.py migrate && gunicorn core.wsgi:application   `
+`   python manage.py migrate && gunicorn core.wsgi:application   `
 
-8\. Deliverables
-================
-
-*   GitHub Repository
-    
-*   Hosted Backend URL
-    
-*   Swagger API Documentation
-    
-*   README with setup instructions
-    
-*   .env.example for configuration guidance
-    
-
-Design Decisions
-================
-
-*   DRF chosen for structured API development.
-    
-*   JWT used for stateless authentication.
-    
-*   OTP chosen for passwordless secure login.
-    
-*   PostgreSQL for production reliability.
-    
-*   Rate limiting implemented for abuse prevention.
-    
-*   Centralized exception handling for consistent API responses.
-    
-*   Activity logging implemented for auditing and traceability.
-    
-
-Final Notes
-===========
-
-This backend demonstrates:
-
-*   Secure authentication architecture
-    
-*   Clean RESTful API design
-    
-*   Production-ready configuration
-    
-*   Proper separation of concerns
-    
-*   Defensive programming practices
