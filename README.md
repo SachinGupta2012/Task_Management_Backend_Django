@@ -13,7 +13,21 @@ This project demonstrates secure authentication, clean REST API design, rate lim
 **Swagger API Documentation:**[https://task-management-backend-django.onrender.com/api/v1/docs/](https://task-management-backend-django.onrender.com/api/v1/docs/)
 
 ## Screenshots
-![image alt]
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t1.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t2.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t3.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t4.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t5.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/Screenshot%202026-02-13%20081015.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t6.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t7.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t9.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t10.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t11.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t12.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t13.png)
+![image alt](https://github.com/SachinGupta2012/Task_Management_Backend_Django/blob/7b731a72fef265e55742a50d6a994f482a88c9eb/screenshots/t14.png)
+
 
 🧠 Tech Stack
 =============
