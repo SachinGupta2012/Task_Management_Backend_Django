@@ -4,6 +4,8 @@ Task Management Backend API
 A secure backend for a Task Management System built using Django REST Framework.
 
 This project demonstrates secure authentication, clean REST API design, rate limiting, logging, and production deployment.
+Note: This solution is implemented using Django (Python) instead of Node.js.
+The same functionality and API behavior have been maintained.
 
 🚀 Live Deployment
 ==================
