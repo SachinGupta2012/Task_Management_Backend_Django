@@ -12,6 +12,9 @@ This project demonstrates secure authentication, clean REST API design, rate lim
 
 **Swagger API Documentation:**[https://task-management-backend-django.onrender.com/api/v1/docs/](https://task-management-backend-django.onrender.com/api/v1/docs/)
 
+## Screenshots
+![image alt]
+
 🧠 Tech Stack
 =============
 
